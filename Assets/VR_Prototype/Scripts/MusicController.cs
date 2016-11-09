@@ -14,6 +14,15 @@ public class MusicController : MonoBehaviour, IGvrGazeResponder
     private Animator animator;
     private ParticleSystem particles;
 
+
+    public AudioClip turnedOn;
+    public AudioClip turnedOff;
+    public AudioClip music;
+
+    private Renderer rend;
+
+    private bool on = false;
+
     public void Awake()
     {
         audio = GetComponent<AudioSource>();
@@ -21,6 +30,7 @@ public class MusicController : MonoBehaviour, IGvrGazeResponder
         particles = GetComponent<ParticleSystem>();
         if (particles == null)
             particles = GetComponentInChildren<ParticleSystem>();
+        rend = GameManager.Instance.Reticle.GetComponent<Renderer>();
     }
 
     public void OnGazeEnter()
@@ -32,6 +42,7 @@ public class MusicController : MonoBehaviour, IGvrGazeResponder
     {
         inObject = false;
         timeInObject = 0f;
+        rend.material.color = new Color(1, 1, 1);
     }
 
     public void OnGazeTrigger()
@@ -41,26 +52,47 @@ public class MusicController : MonoBehaviour, IGvrGazeResponder
     void Update()
     {
         if (inObject)
+        {
             timeInObject += Time.deltaTime;
+            float colorValue = 1 - (timeInObject / (timeToPlay));
+            if (colorValue > 0)
+            {
+                rend.material.color = new Color(colorValue, colorValue, colorValue);
+            }
+        }
 
         if (timeInObject > timeToPlay)
         {
             animator.SetBool("playing", !animator.GetBool("playing"));
 
-            if (audio.isPlaying)
-            {
-                audio.Stop();
-                if (particles != null)
-                    particles.Stop();
-            }
+            if (!on)
+                StartCoroutine(TurnOn());
             else
             {
+                audio.clip = turnedOff;
                 audio.Play();
-                if (particles != null)
-                    particles.Play();
+                particles.Stop();
             }
 
+            on = !on;
             timeInObject = 0;
         }
     }
+
+    IEnumerator TurnOn()
+    {
+        audio.clip = turnedOn;
+        audio.Play();
+        yield return new WaitForSeconds(0.1f);
+
+        while(audio.isPlaying)
+        {
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        particles.Play();
+        audio.clip = music;
+        audio.Play();
+    }
+
 }

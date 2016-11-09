@@ -8,14 +8,21 @@ public class LightController : MonoBehaviour, IGvrGazeResponder
 
     public GameObject lights;
     public float timeToPlay = 1f;
+    public AudioClip lightOn;
+    public AudioClip lightOff;
 
-    private GvrAudioSource audio;
+    private AudioSource audio;
     private Animator animator;
+
+    private Renderer rend;
+
 
     public void Awake()
     {
-        audio = GetComponent<GvrAudioSource>();
+        audio = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
+        rend = GameManager.Instance.Reticle.GetComponent<Renderer>();
+
     }
 
     public void OnGazeEnter()
@@ -27,6 +34,7 @@ public class LightController : MonoBehaviour, IGvrGazeResponder
     {
         inObject = false;
         timeInObject = 0f;
+        rend.material.color = new Color(1, 1, 1);
     }
 
     public void OnGazeTrigger()
@@ -36,12 +44,24 @@ public class LightController : MonoBehaviour, IGvrGazeResponder
     void Update()
     {
         if (inObject)
+        {
             timeInObject += Time.deltaTime;
+            float colorValue = 1 - (timeInObject / (timeToPlay));
+            if (colorValue > 0)
+            {
+                rend.material.color = new Color(colorValue, colorValue, colorValue);
+            }
+        }
 
         if (timeInObject > timeToPlay)
         {
-            lights.SetActive(!lights.activeSelf);
+            if (lights.activeSelf)
+                audio.clip = lightOn;
+            else
+                audio.clip = lightOff;
 
+            lights.SetActive(!lights.activeSelf);
+            audio.Play();
             timeInObject = 0;
         }
     }
