@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 
 public class Box : MonoBehaviour, IGvrGazeResponder
 {
@@ -9,13 +7,19 @@ public class Box : MonoBehaviour, IGvrGazeResponder
     private Vector3 distance;
 
     public float timeToDrag = 1f;
-    public float smooth = 1f;
+    public float smooth = 14f;
 
     private GameObject cam;
+    private Renderer rend;
 
-    public void Awake()
+    void Awake()
     {
         cam = GameObject.FindGameObjectWithTag("MainCamera");
+    }
+
+    void Start()
+    {
+        rend = GameManager.Instance.Reticle.GetComponent<Renderer>();
     }
 
     public void OnGazeEnter()
@@ -31,6 +35,8 @@ public class Box : MonoBehaviour, IGvrGazeResponder
         Debug.Log("salimos de la caja");
         inObject = false;
         timeInObject = 0f;
+        rend.material.color = new Color(1, 1, 1);
+
         GetComponent<Rigidbody>().useGravity = true;
     }
 
@@ -42,7 +48,14 @@ public class Box : MonoBehaviour, IGvrGazeResponder
     void Update()
     {
         if (inObject)
+        {
             timeInObject += Time.deltaTime;
+            float colorValue = 1 - (timeInObject / (timeToDrag));
+            if (colorValue > 0)
+            {
+                rend.material.color = new Color(colorValue, 1, colorValue);
+            }
+        }
 
         if (timeInObject > timeToDrag)
         {

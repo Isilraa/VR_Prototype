@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(GvrAudioSource))]
+[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Animator))]
 public class MusicController : MonoBehaviour, IGvrGazeResponder
 {
@@ -10,12 +10,12 @@ public class MusicController : MonoBehaviour, IGvrGazeResponder
 
     public float timeToPlay = 1f;
 
-    private GvrAudioSource audio;
+    private AudioSource audio;
     private Animator animator;
 
     public void Awake()
     {
-        audio = GetComponent<GvrAudioSource>();
+        audio = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
     }
 
