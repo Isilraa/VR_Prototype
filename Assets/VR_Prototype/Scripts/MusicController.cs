@@ -12,11 +12,15 @@ public class MusicController : MonoBehaviour, IGvrGazeResponder
 
     private AudioSource audio;
     private Animator animator;
+    private ParticleSystem particles;
 
     public void Awake()
     {
         audio = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
+        particles = GetComponent<ParticleSystem>();
+        if (particles == null)
+            particles = GetComponentInChildren<ParticleSystem>();
     }
 
     public void OnGazeEnter()
@@ -42,10 +46,19 @@ public class MusicController : MonoBehaviour, IGvrGazeResponder
         if (timeInObject > timeToPlay)
         {
             animator.SetBool("playing", !animator.GetBool("playing"));
+
             if (audio.isPlaying)
+            {
                 audio.Stop();
+                if (particles != null)
+                    particles.Stop();
+            }
             else
+            {
                 audio.Play();
+                if (particles != null)
+                    particles.Play();
+            }
 
             timeInObject = 0;
         }
