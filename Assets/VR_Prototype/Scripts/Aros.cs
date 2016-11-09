@@ -2,20 +2,20 @@
 using System.Collections;
 using System;
 
-public class AmazingBox : MonoBehaviour, IGvrGazeResponder
+public class Aros : MonoBehaviour, IGvrGazeResponder
 {
     public void OnGazeEnter()
     {
-        Debug.Log("entramos en la caja");
+        Debug.Log("entramos en el aro");
     }
 
     public void OnGazeExit()
     {
-        Debug.Log("salimos de la caja");
+        Debug.Log("salimos de el aro");
     }
 
     public void OnGazeTrigger()
     {
-        Destroy(gameObject);
+        Debug.Log("hago click en el aro");
     }
 }
