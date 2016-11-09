@@ -37,7 +37,10 @@ public class WayPoint : MonoBehaviour, IGvrGazeResponder
         }
 
         if (image.fillAmount == 0)
+        {
             GameManager.Instance.DateUnPaseo(this.transform.position);
+            WaypointsController.Instance.DeactivateWaypoint(gameObject);
+        }
 
         waiting = false;
         image.fillAmount = 1;
