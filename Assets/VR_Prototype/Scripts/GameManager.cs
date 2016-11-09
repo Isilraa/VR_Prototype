@@ -23,7 +23,23 @@ public class GameManager : MonoBehaviour {
     {
         target = objetivo;
         walking = true;
-        StartCoroutine(APasear());
+        //StartCoroutine(APasear());
+    }
+
+    void Update()
+    {
+        if(walking)
+        {
+            Vector3 dir = target - Player.transform.position;
+
+            if (dir.magnitude > 0.25f)
+            {
+                dir.Normalize();
+                Player.transform.Translate(dir * speed * Time.deltaTime);
+            }
+            else
+                walking = false;
+        }
     }
 
     IEnumerator APasear()
