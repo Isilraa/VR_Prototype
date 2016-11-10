@@ -11,6 +11,10 @@ public class Box : MonoBehaviour, IGvrGazeResponder
 
     private GameObject cam;
     private Renderer rend;
+    private Transform alfombraTransform;
+    private AudioSource source;
+    private BoxCollider col;
+
 
     void Awake()
     {
@@ -20,24 +24,23 @@ public class Box : MonoBehaviour, IGvrGazeResponder
     void Start()
     {
         rend = GameManager.Instance.Reticle.GetComponent<Renderer>();
+
+        source = GetComponent<AudioSource>();
+
+        alfombraTransform = GameObject.FindGameObjectWithTag("Alfombra").transform;
+
+        col = GetComponentInChildren<BoxCollider>();
+        
     }
 
     public void OnGazeEnter()
     {
-        Debug.Log("entramos en la caja");
-        inObject = true;
-        distance = transform.position - cam.transform.position;
-        GetComponent<Rigidbody>().useGravity = false;
+        
     }
 
     public void OnGazeExit()
     {
-        Debug.Log("salimos de la caja");
-        inObject = false;
-        timeInObject = 0f;
-        rend.material.color = new Color(1, 1, 1);
-
-        GetComponent<Rigidbody>().useGravity = true;
+        
     }
 
     public void OnGazeTrigger()
@@ -59,7 +62,37 @@ public class Box : MonoBehaviour, IGvrGazeResponder
 
         if (timeInObject > timeToDrag)
         {
+            GetComponent<Rigidbody>().isKinematic = true;
             transform.position = Vector3.Lerp(transform.position, cam.transform.position + cam.transform.forward * distance.magnitude, Time.deltaTime * smooth);
+
+            if (transform.position.y < alfombraTransform.position.y + col.size.y)
+            {
+                transform.position = new Vector3(transform.position.x, alfombraTransform.position.y + col.size.y, transform.position.z);
+            }
         }
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (source != null)
+            source.Play();
+    }
+
+    void OnChivatoEnter ()
+    {
+        Debug.Log("entramos en la caja");
+        inObject = true;
+        distance = transform.position - cam.transform.position;
+        GetComponent<Rigidbody>().useGravity = false;
+    }
+    void OnChivatoExit ()
+    {
+        Debug.Log("salimos de la caja");
+        inObject = false;
+        timeInObject = 0f;
+        GetComponent<Rigidbody>().isKinematic = false;
+        rend.material.color = new Color(1, 1, 1);
+
+        GetComponent<Rigidbody>().useGravity = true;
     }
 }

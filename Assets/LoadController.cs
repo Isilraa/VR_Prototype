@@ -7,6 +7,8 @@ public class LoadController : MonoBehaviour, IGvrGazeResponder {
 
     private Animator animator;
     public bool load;
+    public Fades fades;
+
 
     void Start()
     {
@@ -20,7 +22,8 @@ public class LoadController : MonoBehaviour, IGvrGazeResponder {
 
     public void OnGazeExit()
     {
-        animator.SetBool("loading", false);
+        if (animator != null)
+            animator.SetBool("loading", false);
     }
 
     public void OnGazeTrigger()
@@ -31,6 +34,13 @@ public class LoadController : MonoBehaviour, IGvrGazeResponder {
     void Update()
     {
         if (load)
+        {
+            load = false;
+            fades.StartFadeOut();
+        }
+        if (fades.finished)
+        {
             SceneManager.LoadScene("mainScene");
+        }
     }
 }

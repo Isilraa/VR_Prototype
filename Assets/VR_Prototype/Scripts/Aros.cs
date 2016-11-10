@@ -27,26 +27,12 @@ public class Aros : MonoBehaviour, IGvrGazeResponder
 
     public void OnGazeEnter()
     {
-        Debug.Log("entramos en el aro");
-        inObject = true;
-        direction = palo.transform.position - transform.position;
-
-        Rigidbody rBody = GetComponent<Rigidbody>();
-        rBody.useGravity = false;
-        rBody.freezeRotation = true;
+        // El chivato ha sustituido a esta función
     }
 
     public void OnGazeExit()
     {
-        Debug.Log("salimos de el aro");
-        inObject = false;
-        timeInObject = 0f; 
-        rend.material.color = new Color(1, 1, 1);
-        offsetY = 0f;
-
-        Rigidbody rBody = GetComponent<Rigidbody>();
-        rBody.useGravity = true;
-        rBody.freezeRotation = false;
+        // El chivato ha sustituido a esta función 
     }
 
     public void OnGazeTrigger()
@@ -68,11 +54,36 @@ public class Aros : MonoBehaviour, IGvrGazeResponder
         // Si tenemos el aro agarrado
         if (timeInObject > timeToDrag)
         {
+            GetComponent<Rigidbody>().isKinematic = true;
             offsetY = elevationSpeed * Time.deltaTime;
             if (offsetY > 4f)
                 offsetY = 4f;
             transform.Translate(direction * speed * Time.deltaTime, Space.World);
             transform.position += new Vector3(0, offsetY, 0);
         }
+    }
+
+    void OnChivatoEnter()
+    {
+        Debug.Log("entramos en el aro");
+        direction = palo.transform.position - transform.position;
+        inObject = true;
+
+        Rigidbody rBody = GetComponent<Rigidbody>();
+        rBody.useGravity = false;
+        rBody.freezeRotation = true;
+    }
+    void OnChivatoExit()
+    {
+        Debug.Log("salimos de el aro");
+        timeInObject = 0f;
+        inObject = false;
+        GetComponent<Rigidbody>().isKinematic = false;
+        rend.material.color = new Color(1, 1, 1);
+        offsetY = 0f;
+
+        Rigidbody rBody = GetComponent<Rigidbody>();
+        rBody.useGravity = true;
+        rBody.freezeRotation = false;   
     }
 }
