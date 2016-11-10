@@ -3,48 +3,50 @@ using System.Collections;
 using System;
 using UnityEngine.UI;
 
-public class WayPoint : MonoBehaviour, IGvrGazeResponder
+public class WayPoint : MonoBehaviour
 {
     public Image image;
     public float timeWait = 2.0f;
-    bool waiting = false;
+    public bool waiting = false;
 
-    public void OnGazeEnter()
+    private float time = 0;
+
+    public void Play()
     {
-        Debug.Log("entramos en la caja");
-        waiting = true;
-        StartCoroutine(FillingWhileWait());
+        if (!waiting)
+        {
+            if (image != null)
+                image.fillAmount = 1;
+            time = 0;
+            waiting = true;
+        }
     }
 
-    public void OnGazeExit()
+    public void Stop()
     {
         if(image != null)
             image.fillAmount = 1;
+        time = 0;
         waiting = false;
     }
 
-    public void OnGazeTrigger()
+    void Update()
     {
-        Debug.Log(gameObject.name + ": nada");
-    }
 
-    IEnumerator FillingWhileWait()
-    {
-        while(waiting && image.fillAmount != 0)
+        if (waiting)
+            time += Time.deltaTime;
+
+        if (waiting && image.fillAmount != 0 && time > 0.5f)
         {
             image.fillAmount -= Time.deltaTime / timeWait;
-            yield return new WaitForSeconds(Time.deltaTime);
         }
 
-        if (image.fillAmount == 0)
+        if (image.fillAmount == 0 && waiting)
         {
+            waiting = false;
+            time = 0;
             GameManager.Instance.DateUnPaseo(this.transform.position);
-            WaypointsController.Instance.DeactivateWaypoint(gameObject);
         }
-
-        waiting = false;
-        image.fillAmount = 1;
     }
-
 
 }

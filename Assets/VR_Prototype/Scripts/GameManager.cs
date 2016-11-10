@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { private set; get; }
 
     private Vector3 target;
-    private bool walking = false;
+    public bool walking = false;
     public float speed = 5.0f;
 
     void Awake()

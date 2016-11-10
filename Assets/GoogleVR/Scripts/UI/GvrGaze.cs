@@ -82,9 +82,9 @@ public class GvrGaze : MonoBehaviour {
 
   // Current target detected the user is "gazing" at.
   private IGvrGazeResponder currentTarget;
-  private GameObject currentGazeObject;
+  public GameObject currentGazeObject { private set; get; }
 
-  private Vector3 lastIntersectPosition;
+  public Vector3 lastIntersectPosition { private set; get; }
 
   // Trigger state.
   private bool isTriggered;
