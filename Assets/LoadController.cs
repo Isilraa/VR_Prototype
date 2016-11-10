@@ -40,7 +40,18 @@ public class LoadController : MonoBehaviour, IGvrGazeResponder {
         }
         if (fades.finished)
         {
-            SceneManager.LoadScene("mainScene");
+            fades.finished = false;
+            StartCoroutine(Load());
+        }
+    }
+
+    IEnumerator Load()
+    {
+        AsyncOperation a = SceneManager.LoadSceneAsync("mainScene");
+        a.allowSceneActivation = true;
+        while (!a.isDone)
+        {
+            yield return null;
         }
     }
 }
