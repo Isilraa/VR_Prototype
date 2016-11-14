@@ -12,13 +12,7 @@ public class Aros : MonoBehaviour, IGvrGazeResponder
     public float elevationSpeed = 0.2f;
     public Transform palo;
 
-    private GameObject cam;
     private Renderer rend;
-
-    void Awake()
-    {
-        cam = GameObject.FindGameObjectWithTag("MainCamera");
-    }
 
     void Start()
     {

@@ -3,9 +3,9 @@ using System.Collections;
 using System;
 
 public class Fades : MonoBehaviour {
-    [Range(0.001f, 0.1f)]
+    [Range(0.1f, 0.5f)]
     public float fadeInVelocity;
-    [Range(0.001f, 0.1f)]
+    [Range(0.1f, 0.5f)]
     public float fadeOutVelocity;
     private MeshRenderer meshPlane;
 
@@ -36,7 +36,7 @@ public class Fades : MonoBehaviour {
         while (meshPlane.material.color.a < 1f)
         {
             Color colorPlane = meshPlane.material.color;
-            meshPlane.material.color = new Color(colorPlane.r, colorPlane.g, colorPlane.b, colorPlane.a + fadeOutVelocity);
+            meshPlane.material.color = new Color(colorPlane.r, colorPlane.g, colorPlane.b, colorPlane.a + fadeOutVelocity * Time.deltaTime);
             yield return null;
         }
         if (meshPlane.material.color.a >= 1f)
@@ -49,7 +49,7 @@ public class Fades : MonoBehaviour {
         while (meshPlane.material.color.a > 0.05f)
         {
             Color colorPlane = meshPlane.material.color;
-            meshPlane.material.color = new Color(colorPlane.r, colorPlane.g, colorPlane.b, colorPlane.a - fadeInVelocity);
+            meshPlane.material.color = new Color(colorPlane.r, colorPlane.g, colorPlane.b, colorPlane.a - fadeInVelocity * Time.deltaTime);
             yield return null;
         }
     }
