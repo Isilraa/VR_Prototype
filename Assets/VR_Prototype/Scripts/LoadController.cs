@@ -17,12 +17,13 @@ public class LoadController : MonoBehaviour, IGvrGazeResponder {
 
     public void OnGazeEnter()
     {
-        animator.SetBool("loading", true);
+        if (animator != null && !load)
+            animator.SetBool("loading", true);
     }
 
     public void OnGazeExit()
     {
-        if (animator != null)
+        if (animator != null && !load)
             animator.SetBool("loading", false);
     }
 
@@ -36,11 +37,13 @@ public class LoadController : MonoBehaviour, IGvrGazeResponder {
         if (load)
         {
             load = false;
+            animator.enabled = false;
             fades.StartFadeOut();
         }
         if (fades.finished)
         {
             fades.finished = false;
+            //SceneManager.LoadScene("mainScene");
             StartCoroutine(Load());
         }
     }

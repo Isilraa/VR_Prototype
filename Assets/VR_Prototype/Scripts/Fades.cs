@@ -3,9 +3,9 @@ using System.Collections;
 using System;
 
 public class Fades : MonoBehaviour {
-    [Range(0.01f, 0.1f)]
+    [Range(0.001f, 0.1f)]
     public float fadeInVelocity;
-    [Range(0.01f, 0.1f)]
+    [Range(0.001f, 0.1f)]
     public float fadeOutVelocity;
     private MeshRenderer meshPlane;
 
@@ -20,13 +20,15 @@ public class Fades : MonoBehaviour {
     public void StartFadeOut()
     {
         finished = false;
+        //gameObject.SetActive(true);
         StartCoroutine(FadeOut());
     }
 
     public void StartFadeIn()
     {
         finished = false;
-        StartCoroutine(FadeIn());
+        //gameObject.SetActive(true);
+        StartCoroutine(FadeIn(gameObject));
     }
 
     private IEnumerator FadeOut()
@@ -42,7 +44,7 @@ public class Fades : MonoBehaviour {
             finished = true;
         }
     }
-    private IEnumerator FadeIn()
+    private IEnumerator FadeIn(GameObject go)
     {
         while (meshPlane.material.color.a > 0.05f)
         {
