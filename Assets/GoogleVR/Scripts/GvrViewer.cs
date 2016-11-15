@@ -341,7 +341,7 @@ public class GvrViewer : MonoBehaviour {
     device.Init();
 
     List<string> diagnostics = new List<string>();
-    NativeUILayerSupported = device.SupportsNativeUILayer(diagnostics);
+    NativeUILayerSupported = false;// device.SupportsNativeUILayer(diagnostics);
     if (diagnostics.Count > 0) {
       Debug.LogWarning("Built-in UI layer disabled. Causes: ["
                        + String.Join("; ", diagnostics.ToArray()) + "]");

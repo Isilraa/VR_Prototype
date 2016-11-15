@@ -42,7 +42,7 @@ namespace Gvr.Internal {
     private Matrix4x4 rightEyeView = new Matrix4x4();
 
     protected bool debugDisableNativeProjections = false;
-    protected bool debugDisableNativeUILayer = false;
+    protected bool debugDisableNativeUILayer = true;
 
     public override void SetNeckModelScale(float scale) {
       SetNeckModelFactor(scale);
