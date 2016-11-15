@@ -72,12 +72,12 @@ public class Aros : MonoBehaviour, IGvrGazeResponder
         Debug.Log("salimos de el aro");
         timeInObject = 0f;
         inObject = false;
-        GetComponent<Rigidbody>().isKinematic = false;
         rend.material.color = new Color(1, 1, 1);
         offsetY = 0f;
 
         Rigidbody rBody = GetComponent<Rigidbody>();
         rBody.useGravity = true;
-        rBody.freezeRotation = false;   
+        rBody.freezeRotation = false;
+        rBody.AddTorque(1, 0, 0);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Box : MonoBehaviour, IGvrGazeResponder
+public class Ball : MonoBehaviour, IGvrGazeResponder
 {
     private float timeInObject = 0f;
     private bool inObject = false;
@@ -13,7 +13,7 @@ public class Box : MonoBehaviour, IGvrGazeResponder
     private Renderer rend;
     private Transform alfombraTransform;
     private AudioSource source;
-    private BoxCollider col;
+    private SphereCollider col;
 
 
     void Awake()
@@ -29,20 +29,20 @@ public class Box : MonoBehaviour, IGvrGazeResponder
 
         alfombraTransform = GameObject.FindGameObjectWithTag("Alfombra").transform;
 
-        col = GetComponentInChildren<BoxCollider>();
+        col = GetComponentInChildren<SphereCollider>();
 
-        
-        
+
+
     }
 
     public void OnGazeEnter()
     {
-        
+
     }
 
     public void OnGazeExit()
     {
-        
+
     }
 
     public void OnGazeTrigger()
@@ -67,9 +67,9 @@ public class Box : MonoBehaviour, IGvrGazeResponder
             GetComponent<Rigidbody>().isKinematic = true;
             transform.position = Vector3.Lerp(transform.position, cam.transform.position + cam.transform.forward * distance.magnitude, Time.deltaTime * smooth);
 
-            if (transform.position.y < alfombraTransform.position.y + col.size.y)
+            if (transform.position.y < alfombraTransform.position.y + col.radius)
             {
-                transform.position = new Vector3(transform.position.x, alfombraTransform.position.y + col.size.y, transform.position.z);
+                transform.position = new Vector3(transform.position.x, alfombraTransform.position.y + col.radius, transform.position.z);
             }
         }
     }
@@ -80,23 +80,21 @@ public class Box : MonoBehaviour, IGvrGazeResponder
             source.Play();
     }
 
-    void OnChivatoEnter ()
+    void OnChivatoEnter()
     {
         Debug.Log("entramos en la caja");
         inObject = true;
         distance = transform.position - cam.transform.position;
         GetComponent<Rigidbody>().useGravity = false;
     }
-    void OnChivatoExit ()
+    void OnChivatoExit()
     {
         Debug.Log("salimos de la caja");
         inObject = false;
         timeInObject = 0f;
+        GetComponent<Rigidbody>().isKinematic = false;
         rend.material.color = new Color(1, 1, 1);
 
-        Rigidbody rigid = GetComponent<Rigidbody>();
-        rigid.isKinematic = false;
-        rigid.useGravity = true;
-        rigid.AddTorque(1, 1, 1);
+        GetComponent<Rigidbody>().useGravity = true;
     }
 }
