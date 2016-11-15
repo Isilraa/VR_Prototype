@@ -8,10 +8,12 @@ public class DoorController : MonoBehaviour, IGvrGazeResponder
     private bool loaded = false;
     private Renderer rend;
     private bool inObject = false;
+    private AudioSource audio;
 
     void Start()
     {
         rend = GameManager.Instance.Reticle.GetComponent<Renderer>();
+        audio = GetComponent<AudioSource>();
     }
 
     public void OnGazeEnter()
@@ -45,6 +47,7 @@ public class DoorController : MonoBehaviour, IGvrGazeResponder
             if (!loaded && timeInObject > timeToLoad)
             {
                 GameManager.Instance.fades.StartFadeOut();
+                audio.Play();
                 loaded = true;
             }
         }
