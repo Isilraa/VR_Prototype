@@ -254,10 +254,10 @@ public class GvrPostRender : MonoBehaviour {
       ComputeUIMatrix();
     }
     uiMaterial.SetPass(0);
-    //DrawSettingsButton();
-    //DrawAlignmentMarker();
+    DrawSettingsButton();
+    DrawAlignmentMarker();
     if (vrMode) {
-      //DrawVRBackButton();
+        DrawVRBackButton();
     }
   }
 
@@ -295,47 +295,47 @@ public class GvrPostRender : MonoBehaviour {
   };
 
   private void ComputeUIMatrix() {
-    centerWidthPx = kCenterLineThicknessDp / 160.0f * Screen.dpi / 2;
-    buttonWidthPx = kButtonWidthDp / 160.0f * Screen.dpi / 2;
-    xScale = buttonWidthPx / Screen.width;
-    yScale = buttonWidthPx / Screen.height;
-    xfm = Matrix4x4.TRS(new Vector3(0.5f, yScale, 0), Quaternion.identity,
-                        new Vector3(xScale, yScale, 1));
+    //centerWidthPx = kCenterLineThicknessDp / 160.0f * Screen.dpi / 2;
+    //buttonWidthPx = kButtonWidthDp / 160.0f * Screen.dpi / 2;
+    //xScale = buttonWidthPx / Screen.width;
+    //yScale = buttonWidthPx / Screen.height;
+    //xfm = Matrix4x4.TRS(new Vector3(0.5f, yScale, 0), Quaternion.identity,
+    //                    new Vector3(xScale, yScale, 1));
   }
 
   private void DrawSettingsButton() {
-    GL.PushMatrix();
-    GL.LoadOrtho();
-    GL.MultMatrix(xfm);
-    GL.Begin(GL.TRIANGLE_STRIP);
-    for (int i = 0, n = Angles.Length * 6; i <= n; i++) {
-      float theta = (i / Angles.Length) * kAnglePerGearSection + Angles[i % Angles.Length];
-      float angle = (90 - theta) * Mathf.Deg2Rad;
-      float x = Mathf.Cos(angle);
-      float y = Mathf.Sin(angle);
-      float mod = Mathf.PingPong(theta, kAnglePerGearSection / 2);
-      float lerp = (mod - kOuterRimEndAngle) / (kInnerRimBeginAngle - kOuterRimEndAngle);
-      float r = Mathf.Lerp(kOuterRadius, kMiddleRadius, lerp);
-      GL.Vertex3(kInnerRadius * x, kInnerRadius * y, 0);
-      GL.Vertex3(r * x, r * y, 0);
-    }
-    GL.End();
-    GL.PopMatrix();
+    //GL.PushMatrix();
+    //GL.LoadOrtho();
+    //GL.MultMatrix(xfm);
+    //GL.Begin(GL.TRIANGLE_STRIP);
+    //for (int i = 0, n = Angles.Length * 6; i <= n; i++) {
+    //  float theta = (i / Angles.Length) * kAnglePerGearSection + Angles[i % Angles.Length];
+    //  float angle = (90 - theta) * Mathf.Deg2Rad;
+    //  float x = Mathf.Cos(angle);
+    //  float y = Mathf.Sin(angle);
+    //  float mod = Mathf.PingPong(theta, kAnglePerGearSection / 2);
+    //  float lerp = (mod - kOuterRimEndAngle) / (kInnerRimBeginAngle - kOuterRimEndAngle);
+    //  float r = Mathf.Lerp(kOuterRadius, kMiddleRadius, lerp);
+    //  GL.Vertex3(kInnerRadius * x, kInnerRadius * y, 0);
+    //  GL.Vertex3(r * x, r * y, 0);
+    //}
+    //GL.End();
+    //GL.PopMatrix();
   }
 
   private void DrawAlignmentMarker() {
-    int x = Screen.width / 2;
-    int w = (int)centerWidthPx;
-    int h = (int)(2 * kTouchSlopFactor * buttonWidthPx);
-    GL.PushMatrix();
-    GL.LoadPixelMatrix(0, Screen.width, 0, Screen.height);
-    GL.Begin(GL.QUADS);
-    GL.Vertex3(x - w, h, 0);
-    GL.Vertex3(x - w, Screen.height - h, 0);
-    GL.Vertex3(x + w, Screen.height - h, 0);
-    GL.Vertex3(x + w, h, 0);
-    GL.End();
-    GL.PopMatrix();
+    //int x = Screen.width / 2;
+    //int w = (int)centerWidthPx;
+    //int h = (int)(2 * kTouchSlopFactor * buttonWidthPx);
+    //GL.PushMatrix();
+    //GL.LoadPixelMatrix(0, Screen.width, 0, Screen.height);
+    //GL.Begin(GL.QUADS);
+    //GL.Vertex3(x - w, h, 0);
+    //GL.Vertex3(x - w, Screen.height - h, 0);
+    //GL.Vertex3(x + w, Screen.height - h, 0);
+    //GL.Vertex3(x + w, h, 0);
+    //GL.End();
+    //GL.PopMatrix();
   }
 
   private void DrawVRBackButton() {
