@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { private set; get; }
 
     private Vector3 target;
+    public Fades fades;
     public bool walking = false;
     public float speed = 5.0f;
 
@@ -40,6 +42,12 @@ public class GameManager : MonoBehaviour {
             }
             else
                 walking = false;
+        }
+
+        if (fades.finished)
+        {
+            SceneManager.LoadSceneAsync("MainMenu");
+            fades.finished = false;
         }
     }
 
